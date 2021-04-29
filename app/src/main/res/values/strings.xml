@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">RMA_LV3_ZAD2</string>
     <string name="loremIpsum">LoremIpsum</string>
+    <string name="tv_newPerson_header">Create a new inspiring person</string>
+    <string name="newPerson_titleInputHint">Person name</string>
+    <string name="newPerson_dateOfBirthInputHint">Date of birth</string>
+    <string name="newPerson_descriptionInputHint">Person Description</string>
+    <string name="newPerson_quotesInputHint">Quotes separated with dot</string>
+    <string name="newPerson_imageUrlInputHint">Image URL</string>
+    <string name="newPerson_saveBtn">Save</string>
 </resources>
