@@ -4,22 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import hr.ferit.sandroblavicki.rma_lv3_zad2.R
 import hr.ferit.sandroblavicki.rma_lv3_zad2.adapters.PersonAdapter
 import hr.ferit.sandroblavicki.rma_lv3_zad2.databinding.FragmentPersonListBinding
 import hr.ferit.sandroblavicki.rma_lv3_zad2.listeners.PersonInteractionListener
+import hr.ferit.sandroblavicki.rma_lv3_zad2.persistence.PeopleDatabaseBuilder
 import hr.ferit.sandroblavicki.rma_lv3_zad2.persistence.PeopleRepository
+import hr.ferit.sandroblavicki.rma_lv3_zad2.persistence.PersonDao
 
 class PersonListFragment : Fragment() {
 
     private lateinit var personListBinding: FragmentPersonListBinding
-    private val peopleRepository = PeopleRepository
+    private val peopleRepository: PersonDao by lazy {
+        PeopleDatabaseBuilder.getInstance().personDao()
+    }
 
     companion object {
         fun newInstance(): PersonListFragment {
@@ -46,14 +48,16 @@ class PersonListFragment : Fragment() {
 
     private fun displayData() {
         val personInteractionListener = object: PersonInteractionListener{
-            override fun onRemove(id: Int) {
-                PeopleRepository.remove(id)
+            override fun onRemove(id: Long) {
+                val person = peopleRepository.getPerson(id)
+                peopleRepository.delete(person)
+                //PeopleRepository.remove(id)
                 (personListBinding.rvPersonList.adapter as PersonAdapter).refreshData(peopleRepository.getPeople())
             }
 
-            override fun onShowQuote(id: Int) {
-                val person = PeopleRepository.get(id)
-                Toast.makeText(context, person?.quotes?.random().toString(), Toast.LENGTH_SHORT).show()
+            override fun onShowQuote(id: Long) {
+                //val person = peopleRepository.getPerson(id)
+                //Toast.makeText(context, person?.quotes?.random().toString(), Toast.LENGTH_SHORT).show()
             }
 
             override fun onEditDetails(id: Int) {
